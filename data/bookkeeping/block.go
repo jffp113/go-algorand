@@ -708,6 +708,9 @@ func (bh BlockHeader) DecodeSignedTxn(stb transactions.SignedTxnInBlock) (transa
 func (bh BlockHeader) EncodeSignedTxn(st transactions.SignedTxn, ad transactions.ApplyData) (transactions.SignedTxnInBlock, error) {
 	var stb transactions.SignedTxnInBlock
 
+
+	logging.Base().Infof("Encoding Transaction %v with group signature",st.ID(),st.GroupSignature)
+
 	proto := config.Consensus[bh.CurrentProtocol]
 	if !proto.SupportSignedTxnInBlock {
 		stb.SignedTxn = st

@@ -36,7 +36,23 @@ type SignedTxn struct {
 	Lsig     LogicSig           `codec:"lsig"`
 	Txn      Transaction        `codec:"txn"`
 	AuthAddr basics.Address     `codec:"sgnr"`
+	GroupSignature GroupEnvelop `codec:"gsig"`
 }
+
+//GroupEnvelop represents a signature from signer node witnesses
+type GroupEnvelop struct {
+	_struct struct{} `codec:",omitempty,omitemptyarray"`
+
+	//public key for the signernode witnesses that sign the Transaction
+	PublicKey []byte `codec:"pubkey"`
+
+	//Group signature over the transactions
+	Signature []byte `codec:"sig"`
+
+	//Scheme used to sign the batch with the signature shares
+	Scheme string `codec:"scheme"`
+}
+
 
 // SignedTxnInBlock is how a signed transaction is encoded in a block.
 type SignedTxnInBlock struct {

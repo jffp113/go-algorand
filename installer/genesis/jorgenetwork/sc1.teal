@@ -1,0 +1,110 @@
+#pragma version 2
+
+txn OnCompletion
+int NoOp
+==
+bnz handle_noop
+
+txn OnCompletion
+int OptIn
+==
+bnz handle_optin
+
+txn OnCompletion
+int CloseOut
+==
+bnz handle_closeout
+
+txn OnCompletion
+int UpdateApplication
+==
+bnz handle_updateapp
+
+txn OnCompletion
+int DeleteApplication
+==
+bnz handle_deleteapp
+
+// Unexpected OnCompletion value. Should be unreachable.
+err
+
+handle_noop:
+
+//Verify if the transaction does not contain any
+//argument
+txn NumAppArgs
+int 0
+==
+bnz return_succ
+
+//Verify if the number of arguments equals to 2
+//Otherwise give error
+txn NumAppArgs
+int 3
+!=
+bnz error
+
+//Check what is the smartcontract operation
+//First check if is a inc op
+txna ApplicationArgs 0
+byte "inc"
+==
+bnz inc_op
+
+//Next check if is a dec op
+txna ApplicationArgs 0
+byte "dec"
+==
+bnz dec_op
+
+//Finally check if is a set op
+txna ApplicationArgs 0
+byte "set"
+==
+bnz set_op
+
+//Inc Operation starts here
+inc_op:
+
+txna ApplicationArgs 1
+dup
+app_global_get
+txna ApplicationArgs 2
+btoi
++
+app_global_put
+
+
+b return_succ //Return Successfuly
+
+//Dec Operation starts here
+dec_op:
+
+txna ApplicationArgs 1
+dup
+app_global_get
+txna ApplicationArgs 2
+btoi
+-
+app_global_put
+
+b return_succ //Return Successfuly
+
+//Set Operation starts here
+set_op:
+txna ApplicationArgs 1
+txna ApplicationArgs 2
+btoi
+app_global_put
+b return_succ //Return Successfuly
+
+handle_optin:
+return_succ:
+int 1 //Return Successfuly
+return
+
+handle_closeout:
+handle_updateapp:
+handle_deleteapp:
+error:
+err

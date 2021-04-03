@@ -279,6 +279,13 @@ func (handler *TxHandler) checkAlreadyCommitted(tx *txBacklogMsg) (processingDon
 }
 
 func (handler *TxHandler) processDecoded(unverifiedTxGroup []transactions.SignedTxn) (outmsg network.OutgoingMessage, processingDone bool) {
+	logging.Base().Infof("Received New Transaction")
+	for _,v := range unverifiedTxGroup {
+		logging.Base().Infof("Received Transaction %v with group signature %v",v.Txn.ID(),v.GroupSignature)
+	}
+
+
+
 	tx := &txBacklogMsg{
 		unverifiedTxGroup: unverifiedTxGroup,
 	}

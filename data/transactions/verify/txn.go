@@ -134,6 +134,7 @@ func TxnGroup(stxs []transactions.SignedTxn, contextHdr bookkeeping.BlockHeader,
 	return
 }
 
+//TODO add group signature verification (Jorge)
 func stxnVerifyCore(s *transactions.SignedTxn, txnIdx int, groupCtx *GroupContext) error {
 	numSigs := 0
 	hasSig := false

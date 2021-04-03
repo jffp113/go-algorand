@@ -461,6 +461,11 @@ func (node *AlgorandFullNode) BroadcastSignedTxGroup(txgroup []transactions.Sign
 	}
 
 	_, err = verify.TxnGroup(txgroup, b, node.ledger.VerifiedTransactionCache())
+
+	for _,v := range  txgroup{
+		node.log.Info(v.GroupSignature)
+	}
+
 	if err != nil {
 		node.log.Warnf("malformed transaction: %v", err)
 		return err

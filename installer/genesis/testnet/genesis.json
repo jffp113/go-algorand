@@ -20,7 +20,7 @@
       "addr": "LHHQJ6UMXRGEPXBVFKT7SY26BQOIK64VVPCLVRL3RNQLX5ZMBYG6ZHZMBE",
       "comment": "Wallet1",
       "state": {
-        "algo": 320000000000000,
+        "algo": 900000000000000,
         "onl": 1,
         "sel": "h7Ml/mY/PDCPSj33u72quxaMX99n+/VE+wD94/hMdzY=",
         "vote": "R9kxsHbji4DlxPOAyLehy8vaiWyLjWdLGWBLnQ5jjY8=",
@@ -1247,7 +1247,7 @@
   ],
   "fees": "A7NMWS3NT3IUDMLVO26ULGXGIIOUQ3ND2TXSER6EBGRZNOBOUIQXHIBGDE",
   "id": "v1.0",
-  "network": "testnet",
+  "network": "testnet_jorge",
   "proto": "https://github.com/algorand/spec/tree/a26ed78ed8f834e2b9ccb6eb7d3ee9f629a6e622",
   "rwd": "7777777777777777777777777777777777777777777777777774MSJUVU",
   "timestamp": 1560210455
