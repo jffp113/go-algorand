@@ -21,6 +21,7 @@ require (
 	github.com/go-swagger/go-swagger v0.25.0
 	github.com/godbus/dbus v0.0.0-20181101234600-2ff6f7ffd60f // indirect
 	github.com/gofrs/flock v0.7.0
+	github.com/golang/protobuf v1.4.2
 	github.com/google/go-querystring v1.0.0
 	github.com/gopherjs/gopherjs v0.0.0-20181103185306-d547d1d9531e // indirect
 	github.com/gopherjs/gopherwasm v1.0.1 // indirect
@@ -49,6 +50,7 @@ require (
 	golang.org/x/sys v0.0.0-20200905004654-be1d3432aa8f
 	golang.org/x/text v0.3.3 // indirect
 	golang.org/x/tools v0.0.0-20200904185747-39188db58858 // indirect
+	google.golang.org/protobuf v1.25.0
 	gopkg.in/airbrake/gobrake.v2 v2.0.9 // indirect
 	gopkg.in/check.v1 v1.0.0-20200227125254-8fa46927fb4f // indirect
 	gopkg.in/gemnasium/logrus-airbrake-hook.v2 v2.1.2 // indirect

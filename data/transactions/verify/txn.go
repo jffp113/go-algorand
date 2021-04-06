@@ -17,11 +17,16 @@
 package verify
 
 import (
+	"bytes"
 	"context"
 	"encoding/binary"
 	"errors"
 	"fmt"
-
+	"github.com/algorand/go-algorand/data/transactions/verify/pb"
+	"github.com/golang/protobuf/proto"
+	"io/ioutil"
+	"net/http"
+	"os"
 	"github.com/algorand/go-algorand/config"
 	"github.com/algorand/go-algorand/crypto"
 	"github.com/algorand/go-algorand/data/basics"
@@ -112,7 +117,90 @@ func Txn(s *transactions.SignedTxn, txnIdx int, groupCtx *GroupContext) error {
 		return errors.New("empty address")
 	}
 
+	if err := groupSignatureVerify(s); err != nil {
+		return err
+	}
+
 	return stxnVerifyCore(s, txnIdx, groupCtx)
+}
+
+// groupSignatureVerify verifies a SignedTxn has well formed group signature
+func groupSignatureVerify(s *transactions.SignedTxn) error {
+	groupSig := s.GroupSignature
+
+	//A Compact transactions does not have signatures
+	if s.Txn.Sender == transactions.CompactCertSender &&
+		s.Txn.Type == protocol.CompactCertTx {
+		return nil
+	}
+
+	if len(groupSig.PublicKey) == 0 {
+		return errors.New("missing group public key")
+	}
+
+	if len(groupSig.Signature) == 0 {
+		return errors.New("missing group signature")
+	}
+
+	if groupSig.Scheme == "" {
+		return errors.New("missing signature scheme")
+	}
+
+	return sendGroupSignatureVerifyRequest(s)
+}
+
+//sendGroupSignatureVerifyRequest Verifies remotely if a signature is well formed
+//Pre: s.GroupSignature is filled
+func sendGroupSignatureVerifyRequest(s *transactions.SignedTxn) error{
+	//Get signer node address via env variables
+	signernodeEndpoint := os.Getenv("SIGNERNODE")
+	if signernodeEndpoint == "" {
+		signernodeEndpoint = "signernode-1"
+	}
+
+
+	//Get Tx digest
+	hashid, data := s.Txn.ToBeHashed()
+	digest := append([]byte(hashid), data...)
+
+
+	groupSig := s.GroupSignature
+
+	return VerifySignature(digest,groupSig.Signature,groupSig.Scheme,groupSig.PublicKey,signernodeEndpoint)
+}
+
+func VerifySignature(digest []byte, sig []byte, scheme string,
+	keyBytes []byte,address string) error {
+
+	req := pb.ClientVerifyMessage{
+		Scheme:    scheme,
+		PublicKey: keyBytes,
+		Digest:    digest,
+		Signature: sig,
+	}
+
+	reqBytes, _ := proto.Marshal(&req)
+
+	completeAddress := fmt.Sprintf("http://%v/verify", address)
+	resp, err := http.Post(completeAddress,
+		"application/protobuf",
+		bytes.NewReader(reqBytes))
+
+	if err != nil {
+		return err
+	}
+
+	body, _ := ioutil.ReadAll(resp.Body)
+
+	msg := pb.ClientVerifyResponse{}
+
+	proto.Unmarshal(body, &msg)
+
+	if msg.Status != pb.ClientVerifyResponse_OK {
+		return errors.New("incorrect signature")
+	}
+
+	return nil
 }
 
 // TxnGroup verifies a []SignedTxn as being signed and having no obviously inconsistent data.
@@ -134,7 +222,7 @@ func TxnGroup(stxs []transactions.SignedTxn, contextHdr bookkeeping.BlockHeader,
 	return
 }
 
-//TODO add group signature verification (Jorge)
+
 func stxnVerifyCore(s *transactions.SignedTxn, txnIdx int, groupCtx *GroupContext) error {
 	numSigs := 0
 	hasSig := false

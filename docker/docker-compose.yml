@@ -8,6 +8,8 @@ services:
       context: ./../
       dockerfile: ./docker/Dockerfile
     entrypoint: []
+    environment:
+      - SIGNERNODE=signernode-1:8080
     command: |
       bash -c "
         chmod 777 ./installer/genesis/jorgenetwork/relay/start.sh
@@ -20,6 +22,8 @@ services:
     entrypoint: []
     ports:
       - "4001:4001"
+    environment:
+      - SIGNERNODE=signernode-2:8080
     command: |
       bash -c "
         chmod 777 ./installer/genesis/jorgenetwork/participant1/start.sh
@@ -32,6 +36,8 @@ services:
     container_name: "peer2"
     image: algorand
     entrypoint: []
+    environment:
+      - SIGNERNODE=signernode-3:8080
     command: |
       bash -c "
         chmod 777 ./installer/genesis/jorgenetwork/participantGeneric/start.sh
@@ -44,6 +50,8 @@ services:
     container_name: "peer3"
     image: algorand
     entrypoint: []
+    environment:
+      - SIGNERNODE=signernode-4:8080
     command: |
       bash -c "
         chmod 777 ./installer/genesis/jorgenetwork/participantGeneric/start.sh
@@ -55,7 +63,9 @@ services:
   peer4:
     container_name: "peer4"
     image: algorand
-    entrypoint: [ ]
+    entrypoint: []
+    environment:
+      - SIGNERNODE=signernode-5:8080
     command: |
       bash -c "
         chmod 777 ./installer/genesis/jorgenetwork/participantGeneric/start.sh
@@ -63,3 +73,8 @@ services:
       "
     depends_on:
       - relay
+
+networks:
+  default:
+    external:
+      name: networkThesis
