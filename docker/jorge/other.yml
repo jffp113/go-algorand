@@ -13,6 +13,7 @@ services:
       - "${PORT}:4001"
     environment:
       - SIGNERNODE=${SIGNERNODE}
+      - BOOTSTRAP=${BOOTSTRAP}
       - GROUPSIG=${GROUPSIG}
     command: |
       bash -c "
