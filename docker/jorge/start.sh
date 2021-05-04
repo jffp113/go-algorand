@@ -5,7 +5,7 @@
 
 SERVERS=(51.83.75.29 51.83.75.29 51.83.75.29 51.83.75.29 51.83.75.29 )
 SIGNERSNODES=(51.83.75.29 51.83.75.29 51.83.75.29 51.83.75.29 51.83.75.29)
-COMPOSE_PATH="/home/jfp/sawtooth-core/docker/jorge/setup/config/first/sawtooth-first-5.yaml"
+COMPOSE_PATH="/home/jfp/go-algorand/docker/jorge"
 
 #Do not change bellow
 ID=1
@@ -63,7 +63,7 @@ do
   CMD="bash -c '
     export ID=${ID} &&
     export GROUPSIG=${GROUPSIG}
-    export BOOTSTRAP=${SIGNERSNODES[0]}
+    export BOOTSTRAP=${SERVERS[0]}
     export PORT=${API_PORT} &&
     export SIGNERNODE=${SIGNERSNODES[ID - 1]}:${SIGNER_PORT} &&
     docker-compose -p ${ID} -f ${COMPOSE_PATH}/other.yml up --detach

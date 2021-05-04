@@ -7,13 +7,12 @@ version: '3'
 
 services:
   peer:
-    container_name: "peer1"
     image: ghcr.io/jffp113/algorand
     entrypoint: []
     ports:
       - "${PORT}:4001"
     environment:
-      - SIGNERNODE=${SIGNERNODE_IP}
+      - SIGNERNODE=${SIGNERNODE}
       - GROUPSIG=${GROUPSIG}
     command: |
       bash -c "
