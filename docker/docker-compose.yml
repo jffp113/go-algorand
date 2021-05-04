@@ -3,13 +3,14 @@ version: '3'
 services:
   relay:
     container_name: "relay"
-    image: algorand
+    image: ghcr.io/jffp113/algorand
     build:
       context: ./../
       dockerfile: ./docker/Dockerfile
     entrypoint: []
     environment:
       - SIGNERNODE=signernode-1:8080
+      - GROUPSIG=0
     command: |
       bash -c "
         chmod 777 ./installer/genesis/jorgenetwork/relay/start.sh
@@ -18,12 +19,13 @@ services:
 
   peer1:
     container_name: "peer1"
-    image: algorand
+    image: ghcr.io/jffp113/algorand
     entrypoint: []
     ports:
       - "4001:4001"
     environment:
       - SIGNERNODE=signernode-2:8080
+      - GROUPSIG=0
     command: |
       bash -c "
         chmod 777 ./installer/genesis/jorgenetwork/participant1/start.sh
@@ -34,10 +36,13 @@ services:
 
   peer2:
     container_name: "peer2"
-    image: algorand
+    image: ghcr.io/jffp113/algorand
     entrypoint: []
+    ports:
+      - "4002:4001"
     environment:
       - SIGNERNODE=signernode-3:8080
+      - GROUPSIG=0
     command: |
       bash -c "
         chmod 777 ./installer/genesis/jorgenetwork/participantGeneric/start.sh
@@ -48,10 +53,13 @@ services:
 
   peer3:
     container_name: "peer3"
-    image: algorand
+    image: ghcr.io/jffp113/algorand
     entrypoint: []
+    ports:
+      - "4003:4001"
     environment:
       - SIGNERNODE=signernode-4:8080
+      - GROUPSIG=0
     command: |
       bash -c "
         chmod 777 ./installer/genesis/jorgenetwork/participantGeneric/start.sh
@@ -62,10 +70,13 @@ services:
 
   peer4:
     container_name: "peer4"
-    image: algorand
+    image: ghcr.io/jffp113/algorand
     entrypoint: []
+    ports:
+      - "4004:4001"
     environment:
       - SIGNERNODE=signernode-5:8080
+      - GROUPSIG=0
     command: |
       bash -c "
         chmod 777 ./installer/genesis/jorgenetwork/participantGeneric/start.sh

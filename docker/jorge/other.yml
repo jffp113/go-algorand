@@ -1,0 +1,22 @@
+version: '3'
+
+#Vars
+#export SIGNERNODE=localhost:8080
+#export GROUPSIG=1
+#export PORT=1
+
+services:
+  peer:
+    container_name: "peer1"
+    image: ghcr.io/jffp113/algorand
+    entrypoint: []
+    ports:
+      - "${PORT}:4001"
+    environment:
+      - SIGNERNODE=${SIGNERNODE_IP}
+      - GROUPSIG=${GROUPSIG}
+    command: |
+      bash -c "
+        chmod 777 ./installer/genesis/jorgenetwork/participantGeneric/start.sh
+        ./installer/genesis/jorgenetwork/participantGeneric/start.sh
+      "

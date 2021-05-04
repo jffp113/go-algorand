@@ -1,4 +1,5 @@
 {
     "Version": 16,
-    "DNSBootstrapID": ""
+    "DNSBootstrapID": "",
+    "EndpointAddress": ":4001"
 }

@@ -128,6 +128,12 @@ func Txn(s *transactions.SignedTxn, txnIdx int, groupCtx *GroupContext) error {
 func groupSignatureVerify(s *transactions.SignedTxn) error {
 	groupSig := s.GroupSignature
 
+	if os.Getenv("GROUPSIG") == "0" {
+		//Means group signatures are deactivated
+		return nil
+	}
+
+
 	//A Compact transactions does not have signatures
 	if s.Txn.Sender == transactions.CompactCertSender &&
 		s.Txn.Type == protocol.CompactCertTx {

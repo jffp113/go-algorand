@@ -51,6 +51,9 @@ type GroupEnvelop struct {
 
 	//Scheme used to sign the batch with the signature shares
 	Scheme string `codec:"scheme"`
+
+	//TODO add group members (1h work)
+	//TODO hash
 }
 
 

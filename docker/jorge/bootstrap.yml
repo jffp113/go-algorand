@@ -1,0 +1,20 @@
+version: '3'
+
+#Vars
+#export SIGNERNODE=localhost:8080
+#export GROUPSIG=1
+
+services:
+  relay:
+    image: ghcr.io/jffp113/algorand
+    ports:
+      - "4161:4161"
+    entrypoint: []
+    environment:
+      - SIGNERNODE=${SIGNERNODE}
+      - GROUPSIG=${GROUPSIG}
+    command: |
+      bash -c "
+        chmod 777 ./installer/genesis/jorgenetwork/relay/start.sh
+        ./installer/genesis/jorgenetwork/relay/start.sh
+      "
