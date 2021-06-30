@@ -3,13 +3,13 @@
 # Purpose: Run multiple sawtooth nodes on multiple machines
 # ----------------------------------------------------
 
-SERVERS=(51.83.75.29 51.83.75.29 51.83.75.29 51.83.75.29 51.83.75.29 )
-SIGNERSNODES=(51.83.75.29 51.83.75.29 51.83.75.29 51.83.75.29 51.83.75.29)
-COMPOSE_PATH="/home/jfp/go-algorand/docker/jorge"
+SERVERS=(146.59.230.10 141.95.18.233 51.79.53.77 139.99.171.133)
+SIGNERSNODES=(146.59.230.10 141.95.18.233 51.79.53.77 139.99.171.133)
+COMPOSE_PATH="/home/ubuntu/go-algorand/docker/jorge"
 
 #Do not change bellow
 ID=1
-GROUPSIG=0 #Change this to on to validate group sigs
+GROUPSIG=1 #Change this to on to validate group sigs
 API_PORT=8008
 SIGNER_PORT=7000
 
@@ -26,7 +26,7 @@ SIGNER_PORT=7000
   "
   echo "- \"${SERVERS[ID - 1]}:${API_PORT}\"" > peers.txt
   echo $CMD
-  echo $CMD | ssh -t jfp@${SERVERS[ID - 1]} bash
+  echo $CMD | ssh -t ubuntu@${SERVERS[ID - 1]} bash
 
 sleep 3
 
@@ -47,7 +47,7 @@ sleep 3
   "
   echo "- \"${SERVERS[ID - 1]}:${API_PORT}\"" >> peers.txt
   echo $CMD
-  echo $CMD | ssh -t jfp@${SERVERS[ID - 1]} bash
+  echo $CMD | ssh -t ubuntu@${SERVERS[ID - 1]} bash
 
 ###Start the rest of the peers
 
@@ -69,6 +69,6 @@ do
     docker-compose -p ${ID} -f ${COMPOSE_PATH}/other.yml up --detach
     '
   "
-  echo $CMD | ssh -t jfp@${s} bash
+  echo $CMD | ssh -t ubuntu@${s} bash
   echo "- \"${s}:${API_PORT}\"" >> peers.txt
 done

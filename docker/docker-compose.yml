@@ -25,6 +25,7 @@ services:
       - "4001:4001"
     environment:
       - SIGNERNODE=signernode-2:8080
+      - BOOTSTRAP=relay
       - GROUPSIG=0
     command: |
       bash -c "
@@ -42,6 +43,7 @@ services:
       - "4002:4001"
     environment:
       - SIGNERNODE=signernode-3:8080
+      - BOOTSTRAP=relay
       - GROUPSIG=0
     command: |
       bash -c "
@@ -60,6 +62,7 @@ services:
     environment:
       - SIGNERNODE=signernode-4:8080
       - GROUPSIG=0
+      - BOOTSTRAP=relay
     command: |
       bash -c "
         chmod 777 ./installer/genesis/jorgenetwork/participantGeneric/start.sh
@@ -77,6 +80,7 @@ services:
     environment:
       - SIGNERNODE=signernode-5:8080
       - GROUPSIG=0
+      - BOOTSTRAP=relay
     command: |
       bash -c "
         chmod 777 ./installer/genesis/jorgenetwork/participantGeneric/start.sh

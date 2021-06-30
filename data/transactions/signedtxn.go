@@ -39,6 +39,8 @@ type SignedTxn struct {
 	GroupSignature GroupEnvelop `codec:"gsig"`
 }
 
+type ID string
+
 //GroupEnvelop represents a signature from signer node witnesses
 type GroupEnvelop struct {
 	_struct struct{} `codec:",omitempty,omitemptyarray"`
@@ -52,8 +54,8 @@ type GroupEnvelop struct {
 	//Scheme used to sign the batch with the signature shares
 	Scheme string `codec:"scheme"`
 
-	//TODO add group members (1h work)
-	//TODO hash
+	//Witnesses Ids that have signed the corresponding transaction
+	WitIds []ID `codec:"ids"`
 }
 
 

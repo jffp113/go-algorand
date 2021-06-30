@@ -74,6 +74,14 @@ import (
 //    |-----> (*) Msgsize
 //    |-----> (*) MsgIsZero
 //
+// ID
+//  |-----> MarshalMsg
+//  |-----> CanMarshalMsg
+//  |-----> (*) UnmarshalMsg
+//  |-----> (*) CanUnmarshalMsg
+//  |-----> Msgsize
+//  |-----> MsgIsZero
+//
 // KeyregTxnFields
 //        |-----> (*) MarshalMsg
 //        |-----> (*) CanMarshalMsg
@@ -2079,6 +2087,52 @@ func (z *Header) Msgsize() (s int) {
 // MsgIsZero returns whether this is a zero value
 func (z *Header) MsgIsZero() bool {
 	return ((*z).Sender.MsgIsZero()) && ((*z).Fee.MsgIsZero()) && ((*z).FirstValid.MsgIsZero()) && ((*z).LastValid.MsgIsZero()) && (len((*z).Note) == 0) && ((*z).GenesisID == "") && ((*z).GenesisHash.MsgIsZero()) && ((*z).Group.MsgIsZero()) && ((*z).Lease == ([32]byte{})) && ((*z).RekeyTo.MsgIsZero())
+}
+
+// MarshalMsg implements msgp.Marshaler
+func (z ID) MarshalMsg(b []byte) (o []byte) {
+	o = msgp.Require(b, z.Msgsize())
+	o = msgp.AppendString(o, string(z))
+	return
+}
+
+func (_ ID) CanMarshalMsg(z interface{}) bool {
+	_, ok := (z).(ID)
+	if !ok {
+		_, ok = (z).(*ID)
+	}
+	return ok
+}
+
+// UnmarshalMsg implements msgp.Unmarshaler
+func (z *ID) UnmarshalMsg(bts []byte) (o []byte, err error) {
+	{
+		var zb0001 string
+		zb0001, bts, err = msgp.ReadStringBytes(bts)
+		if err != nil {
+			err = msgp.WrapError(err)
+			return
+		}
+		(*z) = ID(zb0001)
+	}
+	o = bts
+	return
+}
+
+func (_ *ID) CanUnmarshalMsg(z interface{}) bool {
+	_, ok := (z).(*ID)
+	return ok
+}
+
+// Msgsize returns an upper bound estimate of the number of bytes occupied by the serialized message
+func (z ID) Msgsize() (s int) {
+	s = msgp.StringPrefixSize + len(string(z))
+	return
+}
+
+// MsgIsZero returns whether this is a zero value
+func (z ID) MsgIsZero() bool {
+	return z == ""
 }
 
 // MarshalMsg implements msgp.Marshaler
